@@ -34,5 +34,5 @@ ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_ENV=production
 
-# Run the application with Gunicorn
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --timeout 300 --workers 1 --threads 2 --log-level info --access-logfile - --error-logfile -
+# Run the application with Gunicorn (using shell form to expand $PORT)
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --timeout 300 --workers 1 --threads 2 --log-level info --access-logfile - --error-logfile -"]
