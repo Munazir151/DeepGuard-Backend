@@ -248,23 +248,15 @@ def process_video(file_bytes, filename):
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Health check endpoint"""
+    """Health check endpoint - lightweight for Railway"""
     try:
+        # Simple health check without model loading
         status = {
-            'status': 'running',
+            'status': 'healthy',
             'app_name': APP_NAME,
             'version': VERSION,
-            'model_loaded': predictor is not None,
-            'face_detector_loaded': face_detector is not None
+            'timestamp': time.time()
         }
-        
-        if predictor is not None:
-            model_info = predictor.get_model_info()
-            if model_info:
-                status['model_info'] = {
-                    'input_shape': str(model_info['input_shape']),
-                    'classes': model_info['class_names']
-                }
         
         logger.info("Health check successful")
         return jsonify(status), 200
