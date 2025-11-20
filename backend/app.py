@@ -18,6 +18,10 @@ logger = logging.getLogger(__name__)
 
 logger.info("Starting DeepGuard Backend...")
 
+# Set OpenCV to headless mode (no GUI dependencies)
+import os
+os.environ['OPENCV_VIDEOIO_PRIORITY_MSMF'] = '0'
+
 try:
     import cv2
     import numpy as np

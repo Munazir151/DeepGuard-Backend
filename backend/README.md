@@ -1,3 +1,13 @@
+---
+title: DeepFake Detection
+emoji: 🔍
+colorFrom: red
+colorTo: blue
+sdk: docker
+pinned: false
+app_port: 8080
+---
+
 # DeepGuard: Deepfake Face Detection System - Backend
 
 A comprehensive Python backend for detecting deepfake images and videos using deep learning.
