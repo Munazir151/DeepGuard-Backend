@@ -7,42 +7,60 @@ import os
 import sys
 import logging
 import time
-import cv2
-import numpy as np
-from flask import Flask, request, jsonify, send_file
-from flask_cors import CORS
-from werkzeug.utils import secure_filename
-import base64
-from io import BytesIO
 
-# Import local modules
-from config import *
-from model.predictor import get_predictor
-from utils.face_detector import get_face_detector
-from utils.preprocessing import ImagePreprocessor, VideoPreprocessor
-from utils.frequency_analysis import analyze_image_frequency
-from utils.gradcam import create_gradcam_visualization
-
-# Configure logging
-os.makedirs(LOG_FOLDER, exist_ok=True)
+# Set up basic logging first
 logging.basicConfig(
-    level=getattr(logging, LOG_LEVEL),
-    format=LOG_FORMAT,
-    datefmt=LOG_DATE_FORMAT,
-    handlers=[
-        logging.FileHandler(LOG_FILE),
-        logging.StreamHandler(sys.stdout)
-    ]
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.StreamHandler(sys.stdout)]
 )
 logger = logging.getLogger(__name__)
 
+logger.info("Starting DeepGuard Backend...")
+
+try:
+    import cv2
+    import numpy as np
+    from flask import Flask, request, jsonify, send_file
+    from flask_cors import CORS
+    from werkzeug.utils import secure_filename
+    import base64
+    from io import BytesIO
+    logger.info("✓ Core dependencies loaded")
+except Exception as e:
+    logger.error(f"✗ Failed to import core dependencies: {str(e)}")
+    raise
+
+# Import local modules
+try:
+    from config import *
+    logger.info("✓ Config loaded")
+except Exception as e:
+    logger.error(f"✗ Failed to load config: {str(e)}")
+    raise
+
+try:
+    from model.predictor import get_predictor
+    from utils.face_detector import get_face_detector
+    from utils.preprocessing import ImagePreprocessor, VideoPreprocessor
+    from utils.frequency_analysis import analyze_image_frequency
+    from utils.gradcam import create_gradcam_visualization
+    logger.info("✓ Local modules imported")
+except Exception as e:
+    logger.error(f"✗ Failed to import local modules: {str(e)}")
+    raise
+
 # Initialize Flask app
+logger.info("Initializing Flask app...")
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Enable CORS
 CORS(app, origins=CORS_ORIGINS, supports_credentials=True)
+logger.info("✓ Flask app initialized")
+logger.info("✓ CORS configured")
+logger.info("✓ App module loaded successfully - ready for requests")
 
 # Global instances (lazy loading)
 predictor = None
@@ -56,11 +74,17 @@ def init_models():
     if predictor is None:
         logger.info("Initializing model predictor...")
         try:
+            if not os.path.exists(MODEL_PATH):
+                logger.warning(f"Model file not found at {MODEL_PATH}")
+                logger.warning("Predictions will fail until model is available")
+                return False
             predictor = get_predictor(MODEL_PATH)
             logger.info("✓ Model predictor initialized")
         except Exception as e:
             logger.error(f"✗ Failed to initialize predictor: {str(e)}")
-            raise
+            import traceback
+            logger.error(traceback.format_exc())
+            return False
     
     if face_detector is None:
         logger.info("Initializing face detector...")
@@ -69,7 +93,11 @@ def init_models():
             logger.info("✓ Face detector initialized")
         except Exception as e:
             logger.error(f"✗ Failed to initialize face detector: {str(e)}")
-            raise
+            import traceback
+            logger.error(traceback.format_exc())
+            return False
+    
+    return True
 
 
 def allowed_file(filename, file_type='image'):
@@ -264,6 +292,12 @@ def health_check():
     except Exception as e:
         logger.error(f"Health check failed: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@app.route('/ping', methods=['GET'])
+def ping():
+    """Ultra-simple ping endpoint"""
+    return 'pong', 200
 
 
 @app.route('/predict', methods=['POST'])
