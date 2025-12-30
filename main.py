@@ -13,7 +13,13 @@ app = FastAPI(title="Deepfake Image Detection API")
 # Add CORS middleware to allow frontend to communicate with backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001" , "http://localhost:3002","https://deep-guard.vercel.app/"],  # Frontend URLs
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://localhost:3001", 
+        "http://localhost:3002",
+        "https://deep-guard.vercel.app",
+        "https://deep-guard.vercel.app/"
+    ],  # Frontend URLs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
