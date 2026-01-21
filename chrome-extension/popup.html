@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepGuard Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 350px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .header p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .stats {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .stat-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .settings {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .setting-label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4ade80;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .api-status {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 15px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .api-status.online {
+      background: rgba(74, 222, 128, 0.2);
+    }
+
+    .api-status.offline {
+      background: rgba(248, 113, 113, 0.2);
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-dot.online {
+      background: #4ade80;
+      box-shadow: 0 0 10px #4ade80;
+    }
+
+    .status-dot.offline {
+      background: #f87171;
+      box-shadow: 0 0 10px #f87171;
+    }
+
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 5px;
+      opacity: 0.9;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛡️ DeepGuard</h1>
+      <p>AI-Powered Deepfake Detection</p>
+    </div>
+
+    <div class="api-status" id="apiStatus">
+      <span class="status-dot offline" id="statusDot"></span>
+      <span id="statusText">Checking API...</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-label">Videos Scanned</span>
+        <span class="stat-value" id="videosScanned">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Deepfakes Detected</span>
+        <span class="stat-value" id="deepfakesFound">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Model Accuracy</span>
+        <span class="stat-value" id="accuracy">97.73%</span>
+      </div>
+    </div>
+
+    <div class="settings">
+      <h3 style="font-size: 14px; margin-bottom: 10px;">Settings</h3>
+      
+      <div class="setting-item">
+        <span class="setting-label">Auto-Scan Videos</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="autoScan" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <span class="setting-label">Show Warnings</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="showWarnings" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <span class="setting-label">Instagram</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="enableInstagram" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <span class="setting-label">Facebook</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="enableFacebook" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="input-group">
+        <label>API Endpoint</label>
+        <input type="text" id="apiEndpoint" placeholder="http://127.0.0.1:5000">
+      </div>
+
+      <button class="btn" id="saveBtn">Save Settings</button>
+    </div>
+
+    <div class="footer">
+      v2.0.0 | ResNet50 AI - 97.73% Accuracy | Made with ❤️ for safer internet
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

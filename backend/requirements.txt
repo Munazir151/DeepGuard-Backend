@@ -1,24 +1,6 @@
-# Core Framework
-Flask==3.0.0
-Flask-CORS==4.0.0
-gunicorn==21.2.0
-
-# Deep Learning
-tensorflow>=2.16.0
-keras>=3.0.0
-
-# Computer Vision
-opencv-python-headless==4.8.1.78
-mtcnn==0.1.1
-Pillow==10.1.0
-
-# Numeric Computing
-numpy==1.24.3
-scipy==1.11.4
-
-# API and File Handling
-Werkzeug==3.0.1
-python-multipart==0.0.6
-
-# Logging and Utilities
-python-dotenv==1.0.0
+fastapi
+uvicorn
+tensorflow
+opencv-python
+numpy
+python-multipart

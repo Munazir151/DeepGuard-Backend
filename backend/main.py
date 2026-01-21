@@ -51,24 +51,6 @@ preprocessing_functions = {
 def get_preprocess_fn(model_name):
     return preprocessing_functions.get(model_name, preprocess_input)
 
-
-@app.get("/")
-async def root():
-    """Root endpoint - API status"""
-    return {
-        "message": "Deepfake Detection API is running",
-        "version": "2.0.0",
-        "status": "active",
-        "models_loaded": len(models),
-        "available_models": list(models.keys()),
-        "endpoints": {
-            "models": "/models",
-            "predict": "/predict",
-            "docs": "/docs"
-        }
-    }
-
-
 def preprocess_image(image_bytes, model_name="xception"):
     # Convert bytes to OpenCV image
     np_img = np.frombuffer(image_bytes, np.uint8)
@@ -119,18 +101,18 @@ async def predict_image(
             if img is None:
                 return {"error": "Invalid image file"}
             
-            pred = float(model.predict(img, verbose=0)[0][0])
+            pred = model.predict(img, verbose=0)[0][0]
             predictions.append(pred)
             model_results[name] = {
-                "prediction": round(pred * 100, 2),
+                "prediction": round(float(pred) * 100, 2),
                 "label": "FAKE" if pred >= 0.5 else "REAL"
             }
         
         # Average ensemble prediction
-        avg_prediction = float(np.mean(predictions))
+        avg_prediction = np.mean(predictions)
         
         label = "FAKE" if avg_prediction >= 0.5 else "REAL"
-        confidence = float(avg_prediction if avg_prediction >= 0.5 else 1 - avg_prediction)
+        confidence = avg_prediction if avg_prediction >= 0.5 else 1 - avg_prediction
         
         processing_time = time.time() - start_time
         
@@ -159,17 +141,17 @@ async def predict_image(
         prediction = model.predict(img, verbose=0)[0][0]
         
         label = "FAKE" if prediction >= 0.5 else "REAL"
-        confidence = prediction if prediction >= 0.5 else 1 - prediction
+        confidence = float(prediction) if prediction >= 0.5 else float(1 - prediction)
         
         processing_time = time.time() - start_time
         
         return {
             "label": label,
-            "confidence": float(round(confidence * 100, 2)),
+            "confidence": round(confidence * 100, 2),
             "probabilities": {
-                "REAL": float(round((1 - prediction) * 100, 2)),
-                "FAKE": float(round(prediction * 100, 2))
+                "REAL": round((1 - float(prediction)) * 100, 2),
+                "FAKE": round(float(prediction) * 100, 2)
             },
-            "processing_time": float(round(processing_time, 2)),
+            "processing_time": round(processing_time, 2),
             "model_used": model_name
         }

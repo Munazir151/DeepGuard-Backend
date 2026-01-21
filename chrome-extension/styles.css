@@ -1,0 +1,880 @@
+/* DeepGuard Extension Styles */
+
+/* Scanning overlay */
+.deepguard-scanning-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+  overflow: hidden;
+}
+
+.deepguard-scanning-content {
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 2;
+}
+
+/* Face scanning grid animation */
+.deepguard-scanning-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(90deg, transparent 49%, rgba(102, 126, 234, 0.3) 50%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, rgba(102, 126, 234, 0.3) 50%, transparent 51%);
+  background-size: 40px 40px;
+  animation: gridPulse 2s ease-in-out infinite;
+}
+
+/* Scanning line effect */
+.deepguard-scanning-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    transparent,
+    rgba(102, 126, 234, 0.8),
+    rgba(118, 75, 162, 0.8),
+    transparent
+  );
+  box-shadow: 
+    0 0 20px rgba(102, 126, 234, 0.8),
+    0 0 40px rgba(118, 75, 162, 0.6);
+  animation: scanLine 2s ease-in-out infinite;
+}
+
+.deepguard-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #667eea;
+  border-right: 4px solid #764ba2;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 1.2s linear infinite;
+  box-shadow: 
+    0 0 20px rgba(102, 126, 234, 0.5),
+    inset 0 0 20px rgba(118, 75, 162, 0.3);
+}
+
+/* Face detection box animation */
+.face-detection-box {
+  position: absolute;
+  border: 3px solid #667eea;
+  box-shadow: 
+    0 0 20px rgba(102, 126, 234, 0.8),
+    inset 0 0 20px rgba(102, 126, 234, 0.3);
+  animation: faceDetect 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.face-detection-box::before,
+.face-detection-box::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #764ba2;
+}
+
+.face-detection-box::before {
+  top: -3px;
+  left: -3px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.face-detection-box::after {
+  bottom: -3px;
+  right: -3px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Biometric scanning animation */
+.biometric-scan-box {
+  position: absolute;
+  border: 2px solid transparent;
+  pointer-events: none;
+  z-index: 9997;
+  animation: biometricPulse 2s ease-in-out infinite;
+}
+
+.scan-corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 3px solid;
+  border-image: linear-gradient(135deg, #667eea, #764ba2) 1;
+  box-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+}
+
+.scan-corner-tl {
+  top: -3px;
+  left: -3px;
+  border-right: none;
+  border-bottom: none;
+  animation: cornerGlow 1.5s ease-in-out infinite;
+}
+
+.scan-corner-tr {
+  top: -3px;
+  right: -3px;
+  border-left: none;
+  border-bottom: none;
+  animation: cornerGlow 1.5s ease-in-out infinite 0.2s;
+}
+
+.scan-corner-bl {
+  bottom: -3px;
+  left: -3px;
+  border-right: none;
+  border-top: none;
+  animation: cornerGlow 1.5s ease-in-out infinite 0.4s;
+}
+
+.scan-corner-br {
+  bottom: -3px;
+  right: -3px;
+  border-left: none;
+  border-top: none;
+  animation: cornerGlow 1.5s ease-in-out infinite 0.6s;
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(102, 126, 234, 0.3),
+    rgba(102, 126, 234, 1),
+    rgba(118, 75, 162, 1),
+    rgba(118, 75, 162, 0.3),
+    transparent
+  );
+  box-shadow: 
+    0 0 20px rgba(102, 126, 234, 1),
+    0 0 40px rgba(118, 75, 162, 0.8),
+    0 0 60px rgba(102, 126, 234, 0.6);
+  animation: verticalScan 2s ease-in-out infinite;
+}
+
+.deepguard-text {
+  font-size: 15px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: textPulse 1.5s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+}
+
+/* AI Analysis indicator */
+.ai-analysis-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.ai-dot {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+  animation: dotBounce 1.4s ease-in-out infinite;
+}
+
+.ai-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.ai-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.ai-dot:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+/* Result badge - Compact with expandable details */
+.deepguard-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 9998;
+  animation: slideInRight 0.4s ease;
+  transition: all 0.3s ease;
+}
+
+.deepguard-badge-content {
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.deepguard-badge-content.real {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.95), rgba(34, 197, 94, 0.95));
+  color: white;
+}
+
+.deepguard-badge-content.fake {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.95), rgba(239, 68, 68, 0.95));
+  color: white;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Compact main badge */
+.badge-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.badge-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.badge-label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* Details panel - hidden by default */
+.badge-details-panel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 0 16px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Show details on hover */
+.deepguard-badge-content:hover .badge-details-panel {
+  max-height: 200px;
+  opacity: 1;
+  padding: 8px 16px 12px;
+}
+
+.deepguard-badge-content:hover .badge-main {
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.deepguard-badge-content:hover {
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.detail-value {
+  font-weight: 600;
+}
+
+/* Info badge */
+.deepguard-info-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 9998;
+  animation: slideInRight 0.4s ease;
+  transition: opacity 0.3s ease;
+}
+
+.info-badge-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Info badge (blue) */
+.deepguard-info-badge.info .info-badge-content {
+  background: rgba(59, 130, 246, 0.95);
+  color: white;
+}
+
+/* Warning badge (yellow/orange) */
+.deepguard-info-badge.warning .info-badge-content {
+  background: rgba(251, 191, 36, 0.95);
+  color: #1f2937;
+}
+
+/* Error badge (red) */
+.deepguard-info-badge.error .info-badge-content {
+  background: rgba(239, 68, 68, 0.95);
+  color: white;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.info-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.info-text {
+  letter-spacing: 0.3px;
+}
+
+/* Scan control buttons */
+.deepguard-controls {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 9998;
+  display: flex;
+  gap: 8px;
+  animation: slideInLeft 0.4s ease;
+}
+
+.control-btn {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:hover {
+  background: rgba(102, 126, 234, 0.9);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+}
+
+.btn-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pause-btn:hover {
+  background: rgba(251, 191, 36, 0.9);
+}
+
+.resume-btn:hover {
+  background: rgba(34, 197, 94, 0.9);
+}
+
+.scan-now-btn:hover {
+  background: rgba(59, 130, 246, 0.9);
+}
+
+.stop-btn:hover {
+  background: rgba(239, 68, 68, 0.9);
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Image scan overlay and button */
+.deepguard-image-scan-overlay {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 99999;
+  opacity: 0.8;
+  pointer-events: all;
+  transition: opacity 0.3s ease;
+}
+
+.deepguard-image-scan-overlay:hover,
+.deepguard-image-scan-overlay.show {
+  opacity: 1;
+}
+
+.image-scan-button {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.image-scan-button:hover {
+  transform: scale(1.2);
+}
+
+.image-scan-button:active {
+  transform: scale(0.9);
+}
+
+.scan-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.98), rgba(118, 75, 162, 0.98));
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.scan-logo:hover {
+  box-shadow: 
+    0 6px 16px rgba(102, 126, 234, 0.6),
+    0 0 0 3px rgba(255, 255, 255, 0.5);
+  background: linear-gradient(135deg, rgba(118, 75, 162, 0.98), rgba(102, 126, 234, 0.98));
+}
+
+.scan-icon-text {
+  font-size: 26px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.scan-icon-img {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.image-scan-button.scanning .scan-logo {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.98), rgba(37, 99, 235, 0.98));
+  animation: spin 1s linear infinite;
+}
+
+.image-scan-button.error .scan-logo {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.98), rgba(220, 38, 38, 0.98));
+}
+
+/* Image scanning overlay with face detection */
+.image-scanning-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9996;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Full image scan line from top to bottom */
+.full-image-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 5px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(102, 126, 234, 0.5),
+    rgba(102, 126, 234, 1),
+    rgba(118, 75, 162, 1),
+    rgba(118, 75, 162, 0.5),
+    transparent
+  );
+  box-shadow: 
+    0 0 40px rgba(102, 126, 234, 1),
+    0 0 60px rgba(118, 75, 162, 0.9),
+    0 0 80px rgba(102, 126, 234, 0.7);
+  animation: fullImageScan 2s ease-in-out;
+  z-index: 20;
+}
+
+@keyframes fullImageScan {
+  0% {
+    top: 0;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.8;
+  }
+}
+
+.image-scan-box {
+  position: absolute;
+  border: 2px solid #667eea;
+  box-shadow: 
+    0 0 20px rgba(102, 126, 234, 0.8),
+    inset 0 0 20px rgba(102, 126, 234, 0.3);
+  animation: imageFaceScan 2s ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes imageFaceScan {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+/* Image scan result overlay */
+.image-scan-result {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 9998;
+  animation: slideInRight 0.4s ease;
+  transition: all 0.3s ease;
+}
+
+.result-badge-compact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.image-scan-result.real .result-badge-compact {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.95), rgba(34, 197, 94, 0.95));
+  color: white;
+}
+
+.image-scan-result.fake .result-badge-compact {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.95), rgba(239, 68, 68, 0.95));
+  color: white;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.result-details-hover {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 0 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 16px 16px;
+}
+
+.image-scan-result:hover .result-details-hover {
+  max-height: 200px;
+  opacity: 1;
+  padding: 8px 16px 12px;
+}
+
+.image-scan-result:hover .result-badge-compact {
+  border-radius: 16px 16px 0 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Warning notification */
+.deepguard-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999999;
+  animation: slideInRight 0.4s ease;
+  transition: opacity 0.3s ease;
+}
+
+.notification-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 360px;
+  border-left: 4px solid #f87171;
+}
+
+.notification-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.notification-body {
+  flex: 1;
+}
+
+.notification-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.notification-message {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.notification-details {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.notification-close:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(248, 113, 113, 0.6);
+  }
+}
+
+@keyframes scanLine {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes gridPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes faceDetect {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  40% {
+    transform: translateY(-10px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes biometricPulse {
+  0%, 100% {
+    transform: scale(0.98);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+@keyframes cornerGlow {
+  0%, 100% {
+    opacity: 0.5;
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(102, 126, 234, 1);
+  }
+}
+
+@keyframes verticalScan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
